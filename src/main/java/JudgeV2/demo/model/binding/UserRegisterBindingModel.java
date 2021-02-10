@@ -51,7 +51,7 @@ public class UserRegisterBindingModel {
         this.email = email;
     }
 
-    @Pattern(regexp = "https:\\/\\/github\\.com\\/.+",
+    @Pattern(regexp = "(https:\\/\\/github.com)(\\/)([^:\\/\\s]+)(\\/)([^:\\/\\s]+)",
     message = "Enter valid git address")
     public String getGit() {
         return git;

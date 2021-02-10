@@ -10,6 +10,9 @@ import JudgeV2.demo.security.CurrentUser;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -53,5 +56,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public void logout() {
         currentUser.setUsername(null);
+    }
+
+    @Override
+    public List<String> findAllUsernames() {
+        return userRepository.findAllUsernames();
+    }
+
+    @Override
+    public void changeRole(String username, RoleNameEnum roleNameEnum) {
+        Optional<User> user = userRepository.findByUsername(username);
+
+        if (user.isPresent()) {
+            if (user.get().getRole().getName() != roleNameEnum) {
+                user.get().setRole(roleService.findRole(roleNameEnum));
+
+                userRepository.save(user.get());
+            }
+        }
     }
 }
